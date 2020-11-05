@@ -28,4 +28,4 @@
 * Duplicate flag icons sometimes appear above the minimap
 * The capture label that usually appears at the center of the screen whilst a player is capturing a point sometimes doesn't move to the center of the screen
 
-Thanks to [J4nssent](https://github.com/J4nssent) for [MapZoneHelper](https://github.com/J4nssent/VU-Mods/tree/master/MapZoneHelper) and [SpawnPointHelper](https://github.com/J4nssent/VU-Mods/tree/master/SpawnPointHelper) that made editing the redzone / spawn points easier.
+Thanks to [J4nssent](https://github.com/J4nssent) for [MapZoneHelper](https://github.com/J4nssent/VU-Mods/tree/master/MapZoneHelper) and [SpawnPointHelper](https://github.com/J4nssent/VU-Mods/tree/master/SpawnPointHelper) that made editing the redzone / spawn points much easier.

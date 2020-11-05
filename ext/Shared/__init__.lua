@@ -5,7 +5,6 @@ local MetroCQL = class("MetroCQL")
 function MetroCQL:__init()
     self:RegisterVars()
     self:RegisterEvents()
-    self:RegisterLoadHandlers()
 end
 
 function MetroCQL:RegisterVars()
@@ -15,7 +14,11 @@ function MetroCQL:RegisterVars()
 end
 
 function MetroCQL:RegisterEvents()
-    Events:Subscribe('Level:RegisterEntityResources', self, self.OnRegisterEntityResources)
+    Events:Subscribe('Level:LoadResources', function(levelName, gameMode, isDedicatedServer)
+        Events:Subscribe('Level:RegisterEntityResources', self, self.OnRegisterEntityResources)
+
+        self:RegisterLoadHandlers()
+    end)
 end
 
 function MetroCQL:RegisterLoadHandlers()
@@ -53,7 +56,7 @@ function MetroCQL:RegisterLoadHandlers()
             instance.distanceField = nil
             instance.surroundingDistanceField = nil
         end
-    end)    
+    end)
 end
 
 function MetroCQL:OnRegisterEntityResources()
@@ -76,7 +79,24 @@ function MetroCQL:OnRegisterEntityResources()
                 self:AddCapturePoint(flag.Letter, flag.Label, flag.Prefab, flag.Pos, flag.CaptureArea, instance)
             end
         end
-    end     
+    end
+    
+    self:ModifyUSSpawnPoints()
+end
+
+function MetroCQL:ModifyUSSpawnPoints()
+    local Spawns = Config.Redzones.US.HQ.Spawns
+
+    for _, Spawn in ipairs(Spawns) do
+        self:ModifySpawnPoint(Spawn)
+    end
+end
+
+function MetroCQL:ModifySpawnPoint(spawn)
+    local instance = AlternateSpawnEntityData(ResourceManager:SearchForInstanceByGuid(spawn.Guid))
+    instance:MakeWritable()
+
+    instance.transform = spawn.Transform
 end
 
 function MetroCQL:AddCapturePoint(letter, label, prefabBp, pos, points, instance)

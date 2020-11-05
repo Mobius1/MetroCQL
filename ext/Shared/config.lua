@@ -1,9 +1,9 @@
 Config = {}
 
-Config.DataContainer = "Levels/MP_Subway/Conquest_Small"
-Config.LogicWorldPart = Guid('308934A9-8735-4467-B9F4-A61F700108D3')
-Config.RegistryContainer = Guid('711883E6-D355-9753-9C3B-A933FA58F329')
-Config.LogicPartition = Guid('F5DE48B8-29ED-4E73-B040-82637BE0E81C')
+Config.DataContainer        = "Levels/MP_Subway/Conquest_Small"
+Config.LogicWorldPart       = Guid('308934A9-8735-4467-B9F4-A61F700108D3')
+Config.RegistryContainer    = Guid('711883E6-D355-9753-9C3B-A933FA58F329')
+Config.LogicPartition       = Guid('F5DE48B8-29ED-4E73-B040-82637BE0E81C')
 
 Config.Flags = {
     {
@@ -36,7 +36,33 @@ Config.Redzones = {
     ["US"] = {
         HQ = { 
             Guid = Guid('67FFDD5E-FB56-4F56-9771-DC9915D0DDE5'),
-            Pos = Vec3(44.572266, 65.227341, 235.148438),
+            Pos = Vec3(56.399414, 64.030090, 269.802734),
+            Spawns = {
+                {
+                    Guid        = Guid('1B0D2B3A-283E-43CF-96CB-E1D0D3041A4C'),
+                    Transform   = LinearTransform(Vec3(-0.904072, 0.000001, 0.427381), Vec3(0.000001, 1.000000, -0.000000), Vec3(-0.427381, -0.000000, -0.904072), Vec3(51.264153, 64.000977, 257.516235))
+                },
+                {
+                    Guid        = Guid('5A1B3B99-1C03-45DB-8929-680E4CF8AD7A'),
+                    Transform   = LinearTransform(Vec3(-0.904072, 0.000001, 0.427381), Vec3(0.000001, 1.000000, -0.000000), Vec3(-0.427381, -0.000000, -0.904072), Vec3(66.488640, 64.000977, 251.665344)),
+                },
+                {
+                    Guid        = Guid('7594587B-F443-431D-88E7-26FA96215332'),
+                    Transform   = LinearTransform(Vec3(-0.737393, 0.000000, 0.675464), Vec3(0.000000, 1.000000, -0.000000), Vec3(-0.675464, -0.000000, -0.737393), Vec3(33.725922, 64.716774, 279.037476)),
+                },
+                {
+                    Guid        = Guid('3444C0F7-D1E3-4CDD-9E99-32A09B521548'),
+                    Transform   = LinearTransform(Vec3(-0.987480, 0.000000, 0.157747), Vec3(0.000000, 1.000000, -0.000000), Vec3(-0.157747, -0.000000, -0.987480), Vec3(36.093212, 64.908966, 249.531464)),
+                },
+                {
+                    Guid        = Guid('0F58560C-B41F-489B-93A8-2D60AA056490'),
+                    Transform   = LinearTransform(Vec3(-0.904071, 0.000001, 0.427381), Vec3(0.000001, 1.000000, -0.000000), Vec3(-0.427381, -0.000000, -0.904071), Vec3(43.557186, 65.159920, 230.257385)),
+                },
+                {
+                    Guid        = Guid('2799182E-8421-4341-971D-9EBAF2455613'),
+                    Transform   = LinearTransform(Vec3(-0.904072, 0.000000, 0.427381), Vec3(0.000000, 1.000000, -0.000000), Vec3(-0.427381, -0.000000, -0.904072), Vec3(64.225975, 64.721878, 220.693771)),
+                }
+            },
         },
         Guid = Guid('081BC71A-E784-49FA-9BDA-02FC1354FE48'),
         Points = {

@@ -4,16 +4,17 @@
  ### NOTE: This is a WIP.
 
 ### Capture Point D
-![Capture Point D](https://i.imgur.com/y8LjBD5.jpg)
+![Capture Point D](https://i.imgur.com/KJlrfml.jpg)
 
 ### Capture Point E
-![Capture Point E](https://i.imgur.com/7VOs5LY.jpg)
+![Capture Point E](https://i.imgur.com/WkUbk55.jpg)
 
 ### Overview
-![Capture Point E](https://i.imgur.com/iM8RCjR.jpg)
+![Capture Point E](https://i.imgur.com/Pw5wFTI.jpg)
 
 ### To Do
 - [x] Move US HQ to park area
-- [ ] Add alternate spawn points
-- [ ] Add alpha vehicles
+- [x] Modify US HQ spawn points
+- [ ] Add spawn points to new flags
 - [ ] Create replacement redzone texture asset (not possible yet)
+- [ ] Add alpha vehicles

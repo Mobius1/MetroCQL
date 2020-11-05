@@ -13,7 +13,7 @@
 ![Capture Point E](https://i.imgur.com/iM8RCjR.jpg)
 
 ### To Do
-- [ ] Move US HQ to park area
+- [x] Move US HQ to park area
 - [ ] Add alternate spawn points
 - [ ] Add alpha vehicles
 - [ ] Create replacement redzone texture asset (not possible yet)

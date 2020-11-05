@@ -26,6 +26,15 @@ function MetroCQL:RegisterLoadHandlers()
         end)
     end
 
+    ResourceManager:RegisterInstanceLoadHandler(Config.LogicPartition, Config.Redzones.US.HQ.Guid, function(instance)
+        instance = ReferenceObjectData(instance)
+        instance:MakeWritable()
+
+        instance.blueprintTransform.trans = Config.Redzones.US.HQ.Pos
+
+        print("MetroCQL: US HQ Updated")
+    end)    
+
     -- Set redzone minimap texture to nil for both teams
     -- TODO: Create new minimap redzone texture when RIME releases
     ResourceManager:RegisterInstanceLoadHandler(Guid('601776CA-D1A8-432D-9F86-26BFF9E0EFB3B'), Guid('EA634590-B1EA-4056-8299-21EAF40D3520'), function(instance)

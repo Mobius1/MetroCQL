@@ -34,7 +34,10 @@ Config.Flags = {
 
 Config.Redzones = {
     ["US"] = {
-        Team = "US",
+        HQ = { 
+            Guid = Guid('67FFDD5E-FB56-4F56-9771-DC9915D0DDE5'),
+            Pos = Vec3(44.572266, 65.227341, 235.148438),
+        },
         Guid = Guid('081BC71A-E784-49FA-9BDA-02FC1354FE48'),
         Points = {
             Vec3(-85.158966, 62.319305, -577.893494),

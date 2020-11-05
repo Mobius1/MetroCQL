@@ -19,6 +19,6 @@
 ### To Do
 - [x] Move US HQ to park area
 - [x] Modify US HQ spawn points
-- [ ] Add spawn points to new flags
+- [x] Add spawn points to new flags
 - [ ] Create replacement redzone texture asset (not possible yet)
 - [ ] Add alpha vehicles

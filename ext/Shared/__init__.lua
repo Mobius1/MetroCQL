@@ -76,7 +76,7 @@ function MetroCQL:OnRegisterEntityResources()
 
             -- Create new capture flags
             for _, flag in ipairs(Config.Flags) do
-                self:AddCapturePoint(flag.Letter, flag.Label, flag.Prefab, flag.Pos, flag.CaptureArea, instance)
+                self:AddCapturePoint(flag, instance)
             end
         end
     end
@@ -84,36 +84,21 @@ function MetroCQL:OnRegisterEntityResources()
     self:ModifyUSSpawnPoints()
 end
 
-function MetroCQL:ModifyUSSpawnPoints()
-    local Spawns = Config.Redzones.US.HQ.Spawns
-
-    for _, Spawn in ipairs(Spawns) do
-        self:ModifySpawnPoint(Spawn)
-    end
-end
-
-function MetroCQL:ModifySpawnPoint(spawn)
-    local instance = AlternateSpawnEntityData(ResourceManager:SearchForInstanceByGuid(spawn.Guid))
-    instance:MakeWritable()
-
-    instance.transform = spawn.Transform
-end
-
-function MetroCQL:AddCapturePoint(letter, label, prefabBp, pos, points, instance)
-    local captureFlag = ReferenceObjectData(MathUtils:RandomGuid())
+function MetroCQL:AddCapturePoint(flag, instance)
+    local captureFlag = ReferenceObjectData(flag.Guid)
 
     captureFlag.blueprintTransform = LinearTransform()
-    captureFlag.blueprintTransform.trans = pos
+    captureFlag.blueprintTransform.trans = flag.Pos
 
-    captureFlag.blueprint           = SpatialPrefabBlueprint(ResourceManager:SearchForInstanceByGuid(prefabBp))
+    captureFlag.blueprint           = SpatialPrefabBlueprint(ResourceManager:SearchForInstanceByGuid(flag.Prefab))
     captureFlag.excluded            = false
     captureFlag.streamRealm         = 0
     captureFlag.castSunShadowEnable = true
 
     -- Set index
-    if letter == "D" then
+    if flag.Letter == "D" then
         captureFlag.indexInBlueprint = 50
-    elseif letter == "E" then
+    elseif flag.Letter == "E" then
         captureFlag.indexInBlueprint = 51
     end
 
@@ -133,15 +118,55 @@ function MetroCQL:AddCapturePoint(letter, label, prefabBp, pos, points, instance
     captureArea.isClosed    = true
     captureArea.allowRoll   = false  
 
-    for _, point in ipairs(points) do
+    for _, point in ipairs(flag.CaptureArea) do
         captureArea.points:add(point)
         captureArea.normals:add(Vec3(0.0, 1.0, 0.0))
     end
 
-    self:AddConnections(captureFlag, captureArea, letter)
+    self:AddConnections(captureFlag, captureArea, flag.Letter)
 
     -- Capture Label
-    self:AddCaptureLabel(captureFlag, label)
+    self:AddCaptureLabel(captureFlag, flag.Label)
+
+    -- Add spawn points
+    for teamID, spawns in ipairs(flag.Spawns) do
+        self:AddSpawnPoints(captureFlag, teamID, spawns)
+    end
+end
+
+function MetroCQL:AddSpawnPoints(captureFlag, teamID, spawns)
+    for _, spawn in ipairs(spawns) do
+        -- Create the spawn point
+        local spawnPoint = self:CreateSpawnPoint(teamID, spawn)
+
+        -- Link spawn point to flag
+        self:AddLinkConnection(captureFlag, spawnPoint, -2001390482, 0)
+    end
+end
+
+function MetroCQL:CreateSpawnPoint(team, transform)
+    local spawnEntityData = AlternateSpawnEntityData(MathUtils:RandomGuid())
+    spawnEntityData.team = team
+    spawnEntityData.transform = transform
+    spawnEntityData.isEventConnectionTarget = 2
+    spawnEntityData.isPropertyConnectionTarget = 3
+    
+    return spawnEntityData
+end
+
+function MetroCQL:ModifyUSSpawnPoints()
+    local Spawns = Config.Redzones.US.HQ.Spawns
+
+    for _, Spawn in ipairs(Spawns) do
+        self:ModifySpawnPoint(Spawn)
+    end
+end
+
+function MetroCQL:ModifySpawnPoint(spawn)
+    local instance = AlternateSpawnEntityData(ResourceManager:SearchForInstanceByGuid(spawn.Guid))
+    instance:MakeWritable()
+
+    instance.transform = spawn.Transform
 end
 
 -- Add connections

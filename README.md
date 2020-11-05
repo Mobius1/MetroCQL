@@ -1,7 +1,10 @@
 # MetroCQL
  MetroCQL - Metro conquest with 5 capture points for Venice Unleashed
+ 
 
- ### NOTE: This is a WIP.
+ #### ⚠️ This is WIP. There may be bugs, crashes, etc. Check the to-do list for further info. ⚠️
+
+----
 
 ### Capture Point D
 ![Capture Point D](https://i.imgur.com/KJlrfml.jpg)

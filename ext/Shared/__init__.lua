@@ -22,12 +22,14 @@ function MetroCQL:RegisterEvents()
 end
 
 function MetroCQL:RegisterLoadHandlers()
-    -- Update redzones to allow players in the park area
+    -- Update combat zone to allow players in the park area
     for Team, Zone in pairs(Config.Redzones) do
         ResourceManager:RegisterInstanceLoadHandler(Config.LogicPartition, Zone.Guid, function(instance)
             self:ReplacePoints(instance, Zone.Points)
         end)
     end
+
+    print("MetroCQL: Combat Zones Updated")
 
     ResourceManager:RegisterInstanceLoadHandler(Config.LogicPartition, Config.Redzones.US.HQ.Guid, function(instance)
         instance = ReferenceObjectData(instance)
@@ -38,24 +40,24 @@ function MetroCQL:RegisterLoadHandlers()
         print("MetroCQL: US HQ Updated")
     end)    
 
-    -- Set redzone minimap texture to nil for both teams
+    -- Remove combat area texture asset from minimap
     -- TODO: Create new minimap redzone texture when RIME releases
-    ResourceManager:RegisterInstanceLoadHandler(Guid('601776CA-D1A8-432D-9F86-26BFF9E0EFB3B'), Guid('EA634590-B1EA-4056-8299-21EAF40D3520'), function(instance)
-        if levelName ~= "Levels/MP_Subway/MP_Subway" or gameMode ~= "ConquestSmall0" then
-            instance = VeniceUICombatAreaAsset(instance)
-            instance:MakeWritable()
-            instance.distanceField = nil
-            instance.surroundingDistanceField = nil
-        end
+    ResourceManager:RegisterInstanceLoadHandler(Guid('65214F82-8127-4ECD-B614-BF3B35C97787'), Guid('B8A18593-D1F7-4794-B96C-B349F3AC6459'), function(instance)
+        instance = VeniceUICombatAreaAsset(instance)
+        instance:MakeWritable()
+        instance.distanceField = nil
+        instance.surroundingDistanceField = nil
+
+        print("MetroCQL: US Combat Area Asset Removed")
     end)
 
-    ResourceManager:RegisterInstanceLoadHandler(Guid('65214F82-8127-4ECD-B614-BF3B35C97787'), Guid('B8A18593-D1F7-4794-B96C-B349F3AC6459'), function(instance)
-        if levelName ~= "Levels/MP_Subway/MP_Subway" or gameMode ~= "ConquestSmall0" then
-            instance = VeniceUICombatAreaAsset(instance)
-            instance:MakeWritable()
-            instance.distanceField = nil
-            instance.surroundingDistanceField = nil
-        end
+    ResourceManager:RegisterInstanceLoadHandler(Guid('601776CA-D1A8-432D-9F86-26BFF9E0EFB3B'), Guid('EA634590-B1EA-4056-8299-21EAF40D3520'), function(instance)
+        instance = VeniceUICombatAreaAsset(instance)
+        instance:MakeWritable()
+        instance.distanceField = nil
+        instance.surroundingDistanceField = nil
+
+        print("MetroCQL: RU Combat Area Asset Removed")
     end)
 end
 
@@ -80,6 +82,8 @@ function MetroCQL:OnRegisterEntityResources()
             end
         end
     end
+
+    print("MetroCQL: New Capture Points Added")
     
     self:ModifyUSSpawnPoints()
 end
@@ -139,7 +143,7 @@ function MetroCQL:AddSpawnPoints(captureFlag, teamID, spawns)
         -- Create the spawn point
         local spawnPoint = self:CreateSpawnPoint(teamID, spawn)
 
-        -- Link spawn point to flag
+        -- Link the spawn point to flag
         self:AddLinkConnection(captureFlag, spawnPoint, -2001390482, 0)
     end
 end

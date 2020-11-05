@@ -3,7 +3,7 @@
  
 ----
 
- #### ⚠️ This is WIP. There may be bugs, crashes, etc. Check the to-do list for further info. ⚠️
+ #### ⚠️ This is WIP. There may be bugs, crashes, etc. Check the issues / bugs list and to-do list for further info. ⚠️
 
 ----
 

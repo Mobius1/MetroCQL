@@ -1,5 +1,5 @@
 # MetroCQL
- MetroCQL - Metro conquest with 5 capture points
+ MetroCQL - Metro conquest with 5 capture points for Venice Unleashed
 
  ### NOTE: This is a WIP.
 

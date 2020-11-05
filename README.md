@@ -22,3 +22,7 @@
 - [x] Add spawn points to new flags
 - [ ] Create replacement redzone texture asset (not possible yet)
 - [ ] Add alpha vehicles
+
+### Known Bugs
+* Duplicate flag icons sometimes appear above the minimap
+* Sometimes the capture label the appears at the center of the screen whilst a player is capturing doesn't move to the center of the screen

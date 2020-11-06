@@ -113,6 +113,16 @@ function MetroCQL:AddCapturePoint(flag, instance)
 
     captureFlag.isEventConnectionTarget     = 3
     captureFlag.isPropertyConnectionTarget  = 2
+
+    -- Update spawn camera position
+    for _, connection in ipairs(captureFlag.blueprint.propertyConnections) do
+        if connection.targetFieldId == -2024647575 then
+            cameraEntity = CameraEntityData(connection.target)
+            cameraEntity:MakeWritable()
+
+            cameraEntity.transform.trans = flag.Camera.Transform
+        end
+    end    
     
     -- Add flag to partition
     self.partition:AddInstance(captureFlag)
@@ -140,8 +150,6 @@ function MetroCQL:AddCapturePoint(flag, instance)
     -- Add spawn points
     for teamID, spawns in ipairs(flag.Spawns) do
         self:AddSpawnPoints(captureFlag, teamID, spawns)
-
-        print("MetroCQL: Capture Spawn Points Added")
     end
 end
 

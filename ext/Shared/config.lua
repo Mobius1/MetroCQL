@@ -1,6 +1,8 @@
 Config = {}
 
 Config.DataContainer        = "Levels/MP_Subway/Conquest_Small"
+Config.MainPartition        = Guid('0964415F-1A6E-4BA3-A11D-EEDDF2DB9FD2')
+Config.MainSubWorld         = Guid('B3B384A6-B1B1-4D81-9EC2-08322A8A7FFA')
 Config.LogicWorldPart       = Guid('308934A9-8735-4467-B9F4-A61F700108D3')
 Config.RegistryContainer    = Guid('711883E6-D355-9753-9C3B-A933FA58F329')
 Config.LogicPartition       = Guid('F5DE48B8-29ED-4E73-B040-82637BE0E81C')
@@ -141,5 +143,22 @@ Config.Redzones = {
             Vec3(-174.580460, 60.834118, -673.810303),
             Vec3(-84.889572, 60.834118, -576.645813)
         }        
+    }
+}
+
+Config.HQs = {
+    {
+        Guid = Guid('67FFDD5E-FB56-4F56-9771-DC9915D0DDE5'),
+        Vehicles = {
+            {
+                Vehicle = "Vehicles/LAV25/LAV25",
+                Transform = LinearTransform(
+                    Vec3(-0.934041, 0.000000, 0.357165),
+                    Vec3(0.000000, 1.000000, 0.000000),
+                    Vec3(-0.357165, 0.000000, -0.934041),
+                    Vec3(57.491211, 65.006638, 232.301758)
+                )
+            }
+        }
     }
 }

@@ -11,14 +11,19 @@ function MetroCQL:RegisterVars()
     self.subWorldData = nil
     self.registryContainer = nil
     self.partition = nil
+    self.initialised = false
 end
 
 function MetroCQL:RegisterEvents()
     Events:Subscribe('Level:LoadResources', function(levelName, gameMode, isDedicatedServer)
-        Events:Subscribe('Level:RegisterEntityResources', self, self.OnRegisterEntityResources)
+        -- If there's a round change or level reload, we don't want this calling again
+        if not self.initialised then
+            self.initialised = true
+            Events:Subscribe('Level:RegisterEntityResources', self, self.OnRegisterEntityResources)
 
-        self:RegisterLoadHandlers()
-    end)
+            self:RegisterLoadHandlers()
+        end
+    end) 
 end
 
 function MetroCQL:RegisterLoadHandlers()
@@ -135,6 +140,8 @@ function MetroCQL:AddCapturePoint(flag, instance)
     -- Add spawn points
     for teamID, spawns in ipairs(flag.Spawns) do
         self:AddSpawnPoints(captureFlag, teamID, spawns)
+
+        print("MetroCQL: Capture Spawn Points Added")
     end
 end
 
@@ -142,35 +149,49 @@ function MetroCQL:AddSpawnPoints(captureFlag, teamID, spawns)
     for _, spawn in ipairs(spawns) do
         -- Create the spawn point
         local spawnPoint = self:CreateSpawnPoint(teamID, spawn)
+        local hash = 1751730141
+
+        if teamID == 2 then
+            hash = 1879290430
+        end
 
         -- Link the spawn point to flag
-        self:AddLinkConnection(captureFlag, spawnPoint, -2001390482, 0)
+        self:AddLinkConnection(captureFlag, spawnPoint, hash, 0)
     end
 end
 
 function MetroCQL:CreateSpawnPoint(team, transform)
-    local spawnEntityData = AlternateSpawnEntityData(MathUtils:RandomGuid())
-    spawnEntityData.team = team
-    spawnEntityData.transform = transform
-    spawnEntityData.isEventConnectionTarget = 2
-    spawnEntityData.isPropertyConnectionTarget = 3
-    
-    return spawnEntityData
+    -- https://docs.veniceunleashed.net/vext/ref/fb/alternatespawnentitydata/
+    local alternateSpawn = AlternateSpawnEntityData(MathUtils:RandomGuid())
+
+    alternateSpawn.isEventConnectionTarget    = 2
+    alternateSpawn.isPropertyConnectionTarget = 3
+    alternateSpawn.team                       = team
+    alternateSpawn.transform                  = transform
+        
+    return alternateSpawn
 end
 
 function MetroCQL:ModifyUSSpawnPoints()
     local Spawns = Config.Redzones.US.HQ.Spawns
 
-    for _, Spawn in ipairs(Spawns) do
-        self:ModifySpawnPoint(Spawn)
+    for _, spawn in ipairs(Spawns) do
+        local instance = AlternateSpawnEntityData(ResourceManager:SearchForInstanceByGuid(spawn.Guid))
+        instance:MakeWritable()
+    
+        instance.transform = spawn.Transform
     end
 end
 
-function MetroCQL:ModifySpawnPoint(spawn)
-    local instance = AlternateSpawnEntityData(ResourceManager:SearchForInstanceByGuid(spawn.Guid))
+function MetroCQL:ReplacePoints(instance, points)
+    instance = VolumeVectorShapeData(instance)
     instance:MakeWritable()
 
-    instance.transform = spawn.Transform
+    instance.points:clear()
+            
+    for _,point in pairs(points) do
+        instance.points:add(point)
+    end
 end
 
 -- Add connections
@@ -181,18 +202,19 @@ function MetroCQL:AddConnections(flag, area, letter)
     
     -- Voiceover confirmation
     -- This enables the voice over confirmation when the flag is captured / lost
-    self:AddVoiceOverConnection(flag)
+    local logicReference = LogicReferenceObjectData(ResourceManager:SearchForInstanceByGuid(Guid('8A58EE67-B957-48A1-ACFF-676CC287F41C')))
+    self:AddEventConnection(flag, logicReference, 2099208964, 2099208964, 3)
+    self:AddEventConnection(flag, logicReference, -1433788352, -1433788352, 3)
 
-    -- This sets the letter of the capture flag
+    -- Add spawn point letter
     local source = ReferenceObjectData(ResourceManager:SearchForInstanceByGuid(Guid('3B307FE6-E28E-4559-ADD0-FECE30C7CD24')))
-
     if letter == "D" then
         self:AddPropertyConnection(source, flag, 976418952, 912861179)
     elseif letter == "E" then
         self:AddPropertyConnection(source, flag, -881081335, 912861179)
     end
 
-    -- UI/UIConquestEventsToOnscreenText
+    -- Captue point events
     local logicReference = LogicReferenceObjectData(ResourceManager:SearchForInstanceByGuid(Guid('9BDD55BB-93CA-4BC8-80D0-A01BEC663D26')))
 
     self:AddEventConnection(flag, logicReference, 2099208964 --[[ OnCaptured ]], -320316437, 3)
@@ -218,14 +240,6 @@ function MetroCQL:AddCaptureLabel(flag, label)
 
     self:AddPropertyConnection(interfaceData, flag, id, 2025703195)
     self:AddPropertyConnection(interfaceData, flag, -77167751, -77167751)
-end
-
--- This enables the voice over confirmation when the flag is captured / lost
-function MetroCQL:AddVoiceOverConnection(flag)
-    local logicReference = LogicReferenceObjectData(ResourceManager:SearchForInstanceByGuid(Guid('8A58EE67-B957-48A1-ACFF-676CC287F41C')))
-
-    self:AddEventConnection(flag, logicReference, 2099208964, 2099208964, 3)
-    self:AddEventConnection(flag, logicReference, -1433788352, -1433788352, 3)
 end
 
 function MetroCQL:AddLinkConnection(source, target, sourceId, targetId)
@@ -264,17 +278,6 @@ function MetroCQL:AddEventConnection(source, target, sourceID, targetID, targetT
     eventConnection.targetType = targetType
     
     self.subWorldData.eventConnections:add(eventConnection) 
-end
-
-function MetroCQL:ReplacePoints(instance, points)
-    instance = VolumeVectorShapeData(instance)
-    instance:MakeWritable()
-
-    instance.points:clear()
-            
-    for _,point in pairs(points) do
-        instance.points:add(point)
-    end
 end
 
 return MetroCQL()

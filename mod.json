@@ -1,7 +1,7 @@
 {
     "Name": "Big Metro",
     "Description": "MetroCQL - Metro conquest with 5 capture points!",
-    "Version": "0.0.4",
+    "Version": "0.0.5",
     "HasVeniceEXT": true,
     "Dependencies": {
         "veniceext": "^1.0.0"

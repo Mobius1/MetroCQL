@@ -27,6 +27,7 @@ function MetroCQL:RegisterEvents()
 end
 
 function MetroCQL:RegisterLoadHandlers()
+
     -- Update combat zone to allow players in the park area
     for Team, Zone in pairs(Config.Redzones) do
         ResourceManager:RegisterInstanceLoadHandler(Config.LogicPartition, Zone.Guid, function(instance)
@@ -66,7 +67,7 @@ function MetroCQL:RegisterLoadHandlers()
     end)
 end
 
-function MetroCQL:OnRegisterEntityResources()
+function MetroCQL:OnRegisterEntityResources(levelData)
     self.subWorldData = SubWorldData(ResourceManager:SearchForDataContainer(Config.DataContainer))
     self.subWorldData:MakeWritable()
 
@@ -102,13 +103,15 @@ function MetroCQL:AddCapturePoint(flag, instance)
     captureFlag.blueprint           = SpatialPrefabBlueprint(ResourceManager:SearchForInstanceByGuid(flag.Prefab))
     captureFlag.excluded            = false
     captureFlag.streamRealm         = 0
-    captureFlag.castSunShadowEnable = true
+    captureFlag.castSunShadowEnable = true   
 
     -- Set index
     if flag.Letter == "D" then
         captureFlag.indexInBlueprint = 50
     elseif flag.Letter == "E" then
         captureFlag.indexInBlueprint = 51
+    elseif flag.Letter == "F" then
+        captureFlag.indexInBlueprint = 52
     end
 
     captureFlag.isEventConnectionTarget     = 3
@@ -132,10 +135,11 @@ function MetroCQL:AddCapturePoint(flag, instance)
 
     self.registryContainer.referenceObjectRegistry:add(captureFlag)
 
+    -- Add capture area
     local captureArea       = VolumeVectorShapeData(MathUtils:RandomGuid())
     captureArea.tension     = 0.0
     captureArea.isClosed    = true
-    captureArea.allowRoll   = false  
+    captureArea.allowRoll   = false
 
     for _, point in ipairs(flag.CaptureArea) do
         captureArea.points:add(point)
@@ -217,12 +221,17 @@ function MetroCQL:AddConnections(flag, area, letter)
     -- Add spawn point letter
     local source = ReferenceObjectData(ResourceManager:SearchForInstanceByGuid(Guid('3B307FE6-E28E-4559-ADD0-FECE30C7CD24')))
     if letter == "D" then
-        self:AddPropertyConnection(source, flag, 976418952, 912861179)
+        self:AddPropertyConnection(source, flag, -29919477, 912861179) -- RU | CString "ID_H_US_D"
+        self:AddPropertyConnection(source, flag, 976418952, 913034200) -- RU | CString "ID_H_RU_D"
     elseif letter == "E" then
-        self:AddPropertyConnection(source, flag, -881081335, 912861179)
+        self:AddPropertyConnection(source, flag, 2004864138, 912861179) -- US | CString "ID_H_US_E"
+        self:AddPropertyConnection(source, flag, -881081335, 913034200) -- RU | CString "ID_H_RU_E"
+    elseif letter == "F" then
+        self:AddPropertyConnection(source, flag, -554168439, 912861179) -- US | CString "ID_H_US_F"
+        self:AddPropertyConnection(source, flag, 1677951242, 913034200) -- RU | CString "ID_H_RU_F"
     end
 
-    -- Captue point events
+    -- Capture point events
     local logicReference = LogicReferenceObjectData(ResourceManager:SearchForInstanceByGuid(Guid('9BDD55BB-93CA-4BC8-80D0-A01BEC663D26')))
 
     self:AddEventConnection(flag, logicReference, 2099208964 --[[ OnCaptured ]], -320316437, 3)

@@ -3,18 +3,21 @@
  
 ----
 
- #### ⚠️ This is WIP. There may be bugs, crashes, etc. Check the issues / bugs list and to-do list for further info. ⚠️
+ #### ⚠️ This is WIP. Check the issues / bugs list and to-do list for further info. ⚠️
 
 ----
+
+### Overview
+![Overview](https://i.imgur.com/wo4ls8B.jpg)
 
 ### Capture Point D
 ![Capture Point D](https://i.imgur.com/KJlrfml.jpg)
 
 ### Capture Point E
-![Capture Point E](https://i.imgur.com/WkUbk55.jpg)
+![Capture Point E](https://i.imgur.com/lNBEsv9.jpg)
 
-### Overview
-![Capture Point E](https://i.imgur.com/Pw5wFTI.jpg)
+### Capture Point F
+![Capture Point F](https://i.imgur.com/kI7Q3ug.jpg)
 
 ### To Do
 - [x] Move US HQ to park area

@@ -1,5 +1,7 @@
-# MetroCQL
- MetroCQL - Metro conquest with 5 capture points for Venice Unleashed
+# MetroCQL - Metro Conquest Large
+Utilises the full Metro map with 3 new capture points added to the park area.
+
+Three points have been added to make it fair as with only 2 in the park area, RU forces had an unfair advantage in that they could capture `A`, `B` and `C` before US could get to `C`.
  
 ----
 

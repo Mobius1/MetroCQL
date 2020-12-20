@@ -26,6 +26,39 @@ function MetroCQL:RegisterEvents()
     end) 
 end
 
+function MetroCQL:OnRegisterEntityResources(levelData)
+    local subWorldData = ResourceManager:SearchForDataContainer(Config.DataContainer)
+
+    if subWorldData == nil then
+        return error("Couldn't find SubWorldData")
+    end
+
+    self.subWorldData = SubWorldData(subWorldData)
+    self.subWorldData:MakeWritable()
+
+    self.registryContainer = RegistryContainer(ResourceManager:SearchForInstanceByGuid(Config.RegistryContainer))
+    self.registryContainer:MakeWritable()    
+
+    -- Add new flags
+    self.partition = ResourceManager:FindDatabasePartition(Config.LogicPartition)
+
+    for _, instance in pairs(self.partition.instances) do
+        if instance.instanceGuid == Config.LogicWorldPart then
+            instance = WorldPartData(instance)
+            instance:MakeWritable()
+
+            -- Create new capture flags
+            for _, flag in ipairs(Config.Flags) do
+                self:AddCapturePoint(flag, instance)
+            end
+        end
+    end
+
+    print("MetroCQL: New Capture Points Added")
+    
+    self:ModifyUSSpawnPoints()
+end
+
 function MetroCQL:RegisterLoadHandlers()
 
     -- Update combat zone to allow players in the park area
@@ -65,33 +98,6 @@ function MetroCQL:RegisterLoadHandlers()
 
         print("MetroCQL: RU Combat Area Asset Removed")
     end)
-end
-
-function MetroCQL:OnRegisterEntityResources(levelData)
-    self.subWorldData = SubWorldData(ResourceManager:SearchForDataContainer(Config.DataContainer))
-    self.subWorldData:MakeWritable()
-
-    self.registryContainer = RegistryContainer(ResourceManager:SearchForInstanceByGuid(Config.RegistryContainer))
-    self.registryContainer:MakeWritable()    
-
-    -- Add new flags
-    self.partition = ResourceManager:FindDatabasePartition(Config.LogicPartition)
-
-    for _, instance in pairs(self.partition.instances) do
-        if instance.instanceGuid == Config.LogicWorldPart then
-            instance = WorldPartData(instance)
-            instance:MakeWritable()
-
-            -- Create new capture flags
-            for _, flag in ipairs(Config.Flags) do
-                self:AddCapturePoint(flag, instance)
-            end
-        end
-    end
-
-    print("MetroCQL: New Capture Points Added")
-    
-    self:ModifyUSSpawnPoints()
 end
 
 function MetroCQL:AddCapturePoint(flag, instance)

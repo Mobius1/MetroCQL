@@ -16,6 +16,16 @@ end
 
 function MetroCQL:RegisterEvents()
     Events:Subscribe('Level:LoadResources', function(levelName, gameMode, isDedicatedServer)
+
+        -- Level / gamemode checks
+        if levelName ~= "Levels/MP_Subway/MP_Subway" then
+            return error("Please ensure 'MP_Subway' is loaded in MapList.txt - ")
+        end
+
+        if gameMode ~= "ConquestLarge0" then
+            return error("Please ensure gamemode is set to 'ConquestLarge0' in MapList.txt - ")
+        end        
+
         -- If there's a round change or level reload, we don't want this calling again
         if not self.initialised then
             self.initialised = true
